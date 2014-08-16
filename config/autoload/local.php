@@ -1,7 +1,11 @@
 <?php
 return array(
     'zf-mvc-auth' => array(
-        'authentication' => array(),
+        'authentication' => array(
+            'http' => array(
+                'htpasswd' => 'data/htpasswd',
+            ),
+        ),
     ),
     'db' => array(
         'adapters' => array(
