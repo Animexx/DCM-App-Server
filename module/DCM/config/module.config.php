@@ -490,6 +490,8 @@ return array(
                         'options' => array(),
                     ),
                 ),
+                'allow_empty' => false,
+                'continue_if_empty' => false,
             ),
             1 => array(
                 'name' => 'adjucator_id',
@@ -501,8 +503,21 @@ return array(
                         'options' => array(),
                     ),
                 ),
+                'allow_empty' => false,
+                'continue_if_empty' => false,
             ),
             2 => array(
+                'name' => 'competition_id',
+                'required' => true,
+                'filters' => array(),
+                'validators' => array(
+                    0 => array(
+                        'name' => 'Zend\\I18n\\Validator\\Int',
+                        'options' => array(),
+                    ),
+                ),
+            ),
+            3 => array(
                 'name' => 'ratings',
                 'required' => true,
                 'filters' => array(),

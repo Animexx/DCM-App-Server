@@ -67,7 +67,7 @@ class CompetitionParticipantResource extends AbstractResourceListener
      * @param  mixed $id
      * @return ApiProblem|mixed
      */
-    public function fetch($id, $par)
+    public function fetch($id)
     {
 		$competion_id = $this->getCurrentCompetitionId();
 		return $this->storageMapper->getItem($competion_id, $id);
