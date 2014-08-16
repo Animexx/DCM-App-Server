@@ -25,6 +25,11 @@ class Module implements ApigilityProviderInterface
 	{
 		return array(
 			'factories' => array(
+				'DCM\V1\Rest\CompetitionGroup\CompetitionGroupStorageMapper' =>  function ($sm) {
+						/** @var \Zend\ServiceManager\ServiceManager $sm */
+						$db = $sm->get('Zend\Db\Adapter\Adapter');
+						return new \DCM\V1\Rest\CompetitionGroup\CompetitionGroupStorageMapper($db);
+					},
 				'DCM\V1\Rest\Competition\CompetitionStorageMapper' =>  function ($sm) {
 						/** @var \Zend\ServiceManager\ServiceManager $sm */
 						$db = $sm->get('Zend\Db\Adapter\Adapter');

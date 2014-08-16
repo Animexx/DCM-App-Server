@@ -6,6 +6,17 @@ use ZF\Rest\AbstractResourceListener;
 
 class CompetitionGroupResource extends AbstractResourceListener
 {
+	/** @var CompetitionGroupStorageMapper $storageMapper */
+	protected $storageMapper;
+
+	/**
+	 * @param CompetitionGroupStorageMapper $storageMapper
+	 */
+	public function __construct($storageMapper)
+	{
+		$this->storageMapper = $storageMapper;
+	}
+
     /**
      * Create a resource
      *
@@ -39,27 +50,28 @@ class CompetitionGroupResource extends AbstractResourceListener
         return new ApiProblem(405, 'The DELETE method has not been defined for collections');
     }
 
-    /**
-     * Fetch a resource
-     *
-     * @param  mixed $id
-     * @return ApiProblem|mixed
-     */
-    public function fetch($id)
-    {
-        return new ApiProblem(405, 'The GET method has not been defined for individual resources2');
-    }
+	/**
+	 * Fetch a resource
+	 *
+	 * @param  mixed $id
+	 * @return ApiProblem|mixed
+	 */
+	public function fetch($id, $par)
+	{
+		return $this->storageMapper->getItem($id);
+	}
 
-    /**
-     * Fetch all or a subset of resources
-     *
-     * @param  array $params
-     * @return ApiProblem|mixed
-     */
-    public function fetchAll($params = array())
-    {
-        return new ApiProblem(405, 'The GET method has not been defined for collections2');
-    }
+	/**
+	 * Fetch all or a subset of resources
+	 *
+	 * @param  array $params
+	 * @return ApiProblem|mixed
+	 */
+	public function fetchAll($params = array())
+	{
+		$collection = new CompetitionGroupCollection($this->storageMapper);
+		return $collection;
+	}
 
     /**
      * Patch (partial in-place update) a resource
