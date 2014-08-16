@@ -35,6 +35,11 @@ class Module implements ApigilityProviderInterface
 						$db = $sm->get('Zend\Db\Adapter\Adapter');
 						return new \DCM\V1\Rest\CompetitionParticipant\CompetitionParticipantStorageMapper($db);
 					},
+				'DCM\V1\Rest\CompetitionRatingCriterion\CompetitionRatingCriterionStorageMapper' =>  function ($sm) {
+						/** @var \Zend\ServiceManager\ServiceManager $sm */
+						$db = $sm->get('Zend\Db\Adapter\Adapter');
+						return new \DCM\V1\Rest\CompetitionRatingCriterion\CompetitionRatingCriterionStorageMapper($db);
+					},
 			),
 		);
 	}

@@ -58,7 +58,7 @@ class CompetitionRatingResource extends AbstractResourceListener
      */
     public function fetchAll($params = array())
     {
-        return new ApiProblem(405, 'The GET method has not been defined for collections');
+        return new ApiProblem(405, 'The GET method has not been defined for collections3');
     }
 
     /**
