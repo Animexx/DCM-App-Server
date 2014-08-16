@@ -70,7 +70,7 @@ class CompetitionParticipantResource extends AbstractResourceListener
     public function fetch($id, $par)
     {
 		$competion_id = $this->getCurrentCompetitionId();
-
+		return $this->storageMapper->getItem($competion_id, $id);
     }
 
     /**
