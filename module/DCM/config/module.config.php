@@ -1,7 +1,104 @@
 <?php
 return array(
     'zf-mvc-auth' => array(
-        'authorization' => array(),
+        'authorization' => array(
+            'DCM\\V1\\Rest\\Competition\\Controller' => array(
+                'entity' => array(
+                    'GET' => true,
+                    'POST' => true,
+                    'PATCH' => true,
+                    'PUT' => true,
+                    'DELETE' => true,
+                ),
+                'collection' => array(
+                    'GET' => true,
+                    'POST' => true,
+                    'PATCH' => true,
+                    'PUT' => true,
+                    'DELETE' => true,
+                ),
+            ),
+            'DCM\\V1\\Rest\\User\\Controller' => array(
+                'entity' => array(
+                    'GET' => true,
+                    'POST' => true,
+                    'PATCH' => true,
+                    'PUT' => true,
+                    'DELETE' => true,
+                ),
+                'collection' => array(
+                    'GET' => true,
+                    'POST' => true,
+                    'PATCH' => true,
+                    'PUT' => true,
+                    'DELETE' => true,
+                ),
+            ),
+            'DCM\\V1\\Rest\\CompetitionGroup\\Controller' => array(
+                'entity' => array(
+                    'GET' => true,
+                    'POST' => true,
+                    'PATCH' => true,
+                    'PUT' => true,
+                    'DELETE' => true,
+                ),
+                'collection' => array(
+                    'GET' => true,
+                    'POST' => true,
+                    'PATCH' => true,
+                    'PUT' => true,
+                    'DELETE' => true,
+                ),
+            ),
+            'DCM\\V1\\Rest\\CompetitionParticipant\\Controller' => array(
+                'entity' => array(
+                    'GET' => true,
+                    'POST' => true,
+                    'PATCH' => true,
+                    'PUT' => true,
+                    'DELETE' => true,
+                ),
+                'collection' => array(
+                    'GET' => true,
+                    'POST' => true,
+                    'PATCH' => true,
+                    'PUT' => true,
+                    'DELETE' => true,
+                ),
+            ),
+            'DCM\\V1\\Rest\\CompetitionRatingCriterion\\Controller' => array(
+                'entity' => array(
+                    'GET' => true,
+                    'POST' => true,
+                    'PATCH' => true,
+                    'PUT' => true,
+                    'DELETE' => true,
+                ),
+                'collection' => array(
+                    'GET' => true,
+                    'POST' => true,
+                    'PATCH' => true,
+                    'PUT' => true,
+                    'DELETE' => true,
+                ),
+            ),
+            'DCM\\V1\\Rest\\CompetitionRating\\Controller' => array(
+                'entity' => array(
+                    'GET' => true,
+                    'POST' => true,
+                    'PATCH' => true,
+                    'PUT' => true,
+                    'DELETE' => true,
+                ),
+                'collection' => array(
+                    'GET' => true,
+                    'POST' => true,
+                    'PATCH' => true,
+                    'PUT' => true,
+                    'DELETE' => true,
+                ),
+            ),
+        ),
     ),
     'controllers' => array(
         'factories' => array(),

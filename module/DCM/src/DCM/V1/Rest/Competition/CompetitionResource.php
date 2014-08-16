@@ -17,6 +17,14 @@ class CompetitionResource extends AbstractResourceListener
 		$this->storageMapper = $storageMapper;
 	}
 
+
+	/**
+	 * @return int
+	 */
+	protected function getCurrentGroupId() {
+		return $this->getEvent()->getRouteMatch()->getParam("group_id");
+	}
+
     /**
      * Create a resource
      *
@@ -62,7 +70,7 @@ class CompetitionResource extends AbstractResourceListener
      */
     public function fetch($id)
     {
-		return $this->storageMapper->getItem($id);
+		return $this->storageMapper->getItem($this->getCurrentGroupId(), $id);
     }
 
     /**
@@ -73,7 +81,10 @@ class CompetitionResource extends AbstractResourceListener
      */
     public function fetchAll($params = array())
     {
-		return new CompetitionCollection($this->storageMapper);
+		$group_id = $this->getCurrentGroupId();
+		$adapter = new CompetitionPaginatorAdapter($this->storageMapper, $group_id);
+		$collection = new CompetitionCollection($adapter);
+		return $collection;
     }
 
     /**
