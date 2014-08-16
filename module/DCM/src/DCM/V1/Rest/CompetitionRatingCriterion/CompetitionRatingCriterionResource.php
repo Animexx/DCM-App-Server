@@ -6,6 +6,24 @@ use ZF\Rest\AbstractResourceListener;
 
 class CompetitionRatingCriterionResource extends AbstractResourceListener
 {
+	/** @var CompetitionRatingCriterionStorageMapper $storageMapper */
+	protected $storageMapper;
+
+	/**
+	 * @param CompetitionRatingCriterionStorageMapper $storageMapper
+	 */
+	public function __construct($storageMapper)
+	{
+		$this->storageMapper = $storageMapper;
+	}
+
+	/**
+	 * @return int
+	 */
+	protected function getCurrentCompetitionGroupId() {
+		return $this->getEvent()->getRouteMatch()->getParam("group_id");
+	}
+
     /**
      * Create a resource
      *
@@ -58,7 +76,10 @@ class CompetitionRatingCriterionResource extends AbstractResourceListener
      */
     public function fetchAll($params = array())
     {
-        return new ApiProblem(405, 'The GET method has not been defined for collections');
+		$group_id = $this->getCurrentCompetitionGroupId();
+		$adapter = new CompetitionRatingCriterionPaginatorAdapter($this->storageMapper, $group_id);
+		$collection = new CompetitionRatingCriterionCollection($adapter);
+		return $collection;
     }
 
     /**

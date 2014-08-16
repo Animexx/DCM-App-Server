@@ -74,7 +74,6 @@ class CompetitionResource extends AbstractResourceListener
     public function fetchAll($params = array())
     {
 		return new CompetitionCollection($this->storageMapper);
-        //return new ApiProblem(405, 'The GET method has not been defined for collections');
     }
 
     /**

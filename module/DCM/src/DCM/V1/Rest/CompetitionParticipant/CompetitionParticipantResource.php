@@ -10,18 +10,18 @@ class CompetitionParticipantResource extends AbstractResourceListener
 	protected $storageMapper;
 
 	/**
-	 * @return int
-	 */
-	protected function getCurrentCompetitionId() {
-		return $this->getEvent()->getRouteMatch()->getParam("competition_id");
-	}
-
-	/**
 	 * @param CompetitionParticipantStorageMapper $storageMapper
 	 */
 	public function __construct($storageMapper)
 	{
 		$this->storageMapper = $storageMapper;
+	}
+
+	/**
+	 * @return int
+	 */
+	protected function getCurrentCompetitionId() {
+		return $this->getEvent()->getRouteMatch()->getParam("competition_id");
 	}
 
     /**

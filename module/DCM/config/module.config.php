@@ -56,7 +56,7 @@ return array(
             'dcm.rest.competition-rating' => array(
                 'type' => 'Segment',
                 'options' => array(
-                    'route' => '/group/:group_id/competition/:competition_id/participant/:participant_id/rating[/:rating_id]',
+                    'route' => '/group/:group_id/competition/:competition_id/participant/:participant_id/rating[/:adjucator_id]',
                     'defaults' => array(
                         'controller' => 'DCM\\V1\\Rest\\CompetitionRating\\Controller',
                     ),
@@ -384,7 +384,7 @@ return array(
         ),
         'DCM\\V1\\Rest\\CompetitionRating\\Validator' => array(
             0 => array(
-                'name' => 'rating',
+                'name' => 'participant_id',
                 'required' => true,
                 'filters' => array(),
                 'validators' => array(
@@ -395,7 +395,7 @@ return array(
                 ),
             ),
             1 => array(
-                'name' => 'adjucator',
+                'name' => 'adjucator_id',
                 'required' => true,
                 'filters' => array(),
                 'validators' => array(
@@ -406,12 +406,10 @@ return array(
                 ),
             ),
             2 => array(
-                'name' => 'date',
-                'required' => false,
+                'name' => 'ratings',
+                'required' => true,
                 'filters' => array(),
                 'validators' => array(),
-                'allow_empty' => true,
-                'continue_if_empty' => true,
             ),
         ),
     ),
@@ -543,7 +541,7 @@ return array(
         'DCM\\V1\\Rest\\CompetitionRating\\Controller' => array(
             'listener' => 'DCM\\V1\\Rest\\CompetitionRating\\CompetitionRatingResource',
             'route_name' => 'dcm.rest.competition-rating',
-            'route_identifier_name' => 'rating_id',
+            'route_identifier_name' => 'adjucator_id',
             'collection_name' => 'competition_rating',
             'entity_http_methods' => array(
                 0 => 'GET',
@@ -626,15 +624,15 @@ return array(
                 'is_collection' => true,
             ),
             'DCM\\V1\\Rest\\CompetitionRating\\CompetitionRatingEntity' => array(
-                'entity_identifier_name' => 'id',
+                'entity_identifier_name' => 'adjucator_id',
                 'route_name' => 'dcm.rest.competition-rating',
-                'route_identifier_name' => 'rating_id',
+                'route_identifier_name' => 'adjucator_id',
                 'hydrator' => 'Zend\\Stdlib\\Hydrator\\ObjectProperty',
             ),
             'DCM\\V1\\Rest\\CompetitionRating\\CompetitionRatingCollection' => array(
-                'entity_identifier_name' => 'id',
+                'entity_identifier_name' => 'adjucator_id',
                 'route_name' => 'dcm.rest.competition-rating',
-                'route_identifier_name' => 'rating_id',
+                'route_identifier_name' => 'adjucator_id',
                 'is_collection' => true,
             ),
         ),
