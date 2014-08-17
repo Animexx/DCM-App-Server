@@ -101,7 +101,9 @@ return array(
         ),
     ),
     'controllers' => array(
-        'factories' => array(),
+        'factories' => array(
+            'DCM\\V1\\Rpc\\Import\\Controller' => 'DCM\\V1\\Rpc\\Import\\ImportControllerFactory',
+        ),
     ),
     'router' => array(
         'routes' => array(
@@ -159,6 +161,16 @@ return array(
                     ),
                 ),
             ),
+            'dcm.rpc.import' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/import',
+                    'defaults' => array(
+                        'controller' => 'DCM\\V1\\Rpc\\Import\\Controller',
+                        'action' => 'import',
+                    ),
+                ),
+            ),
         ),
     ),
     'zf-versioning' => array(
@@ -169,9 +181,19 @@ return array(
             5 => 'dcm.rest.competition-participant',
             0 => 'dcm.rest.competition-rating-criterion',
             6 => 'dcm.rest.competition-rating',
+            7 => 'dcm.rpc.import',
         ),
     ),
-    'zf-rpc' => array(),
+    'zf-rpc' => array(
+        'DCM\\V1\\Rpc\\Import\\Controller' => array(
+            'service_name' => 'Import',
+            'http_methods' => array(
+                0 => 'GET',
+                1 => 'POST',
+            ),
+            'route_name' => 'dcm.rpc.import',
+        ),
+    ),
     'zf-content-negotiation' => array(
         'controllers' => array(
             'DCM\\V1\\Rest\\Competition\\Controller' => 'HalJson',
@@ -180,6 +202,7 @@ return array(
             'DCM\\V1\\Rest\\CompetitionParticipant\\Controller' => 'HalJson',
             'DCM\\V1\\Rest\\CompetitionRatingCriterion\\Controller' => 'HalJson',
             'DCM\\V1\\Rest\\CompetitionRating\\Controller' => 'HalJson',
+            'DCM\\V1\\Rpc\\Import\\Controller' => 'Json',
         ),
         'accept_whitelist' => array(
             'DCM\\V1\\Rest\\Competition\\Controller' => array(
@@ -212,6 +235,11 @@ return array(
                 1 => 'application/hal+json',
                 2 => 'application/json',
             ),
+            'DCM\\V1\\Rpc\\Import\\Controller' => array(
+                0 => 'application/vnd.dcm.v1+json',
+                1 => 'application/json',
+                2 => 'application/*+json',
+            ),
         ),
         'content_type_whitelist' => array(
             'DCM\\V1\\Rest\\Competition\\Controller' => array(
@@ -238,6 +266,10 @@ return array(
                 0 => 'application/vnd.dcm.v1+json',
                 1 => 'application/json',
             ),
+            'DCM\\V1\\Rpc\\Import\\Controller' => array(
+                0 => 'application/vnd.dcm.v1+json',
+                1 => 'application/json',
+            ),
         ),
     ),
     'zf-content-validation' => array(
@@ -258,6 +290,9 @@ return array(
         ),
         'DCM\\V1\\Rest\\CompetitionRating\\Controller' => array(
             'input_filter' => 'DCM\\V1\\Rest\\CompetitionRating\\Validator',
+        ),
+        'DCM\\V1\\Rpc\\Import\\Controller' => array(
+            'input_filter' => 'DCM\\V1\\Rpc\\Import\\Validator',
         ),
     ),
     'input_filter_specs' => array(
@@ -522,6 +557,21 @@ return array(
                 'required' => true,
                 'filters' => array(),
                 'validators' => array(),
+            ),
+        ),
+        'DCM\\V1\\Rpc\\Import\\Validator' => array(
+            0 => array(
+                'name' => 'password',
+                'required' => true,
+                'filters' => array(
+                    0 => array(
+                        'name' => 'Zend\\Filter\\StringTrim',
+                        'options' => array(),
+                    ),
+                ),
+                'validators' => array(),
+                'allow_empty' => false,
+                'continue_if_empty' => false,
             ),
         ),
     ),
