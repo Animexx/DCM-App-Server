@@ -3,3 +3,4 @@
 /vendor
 /data
 /.idea
+config/autoload/local.php
