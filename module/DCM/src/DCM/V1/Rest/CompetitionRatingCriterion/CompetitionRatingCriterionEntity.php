@@ -14,6 +14,8 @@ class CompetitionRatingCriterionEntity
 	public $order;
 	/** @var int $max_rating */
 	public $max_rating;
+	/** @var int $weight */
+	public $weight;
 
 	/**
 	 * @param array $data

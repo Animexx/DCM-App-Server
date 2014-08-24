@@ -3,7 +3,7 @@ CREATE TABLE 'competition_adjucators' ('competition_id' INTEGER NOT NULL, 'user_
 CREATE TABLE 'competition_groups' ('id' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, 'name' TEXT);
 CREATE TABLE 'users' ('id' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, 'animexx_id' INTEGER, 'username' TEXT, 'password' TEXT, 'sysadmin' INTEGER DEFAULT 0);
 CREATE TABLE 'competition_participants' ('competition_id' INTEGER NOT NULL, 'user_id' INTEGER NOT NULL, 'name' TEXT, 'data' TEXT, PRIMARY KEY ('competition_id', 'user_id'));
-CREATE TABLE 'competition_rating_criteria' ('id' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, 'competition_group_id' INTEGER, 'name' TEXT, 'max_rating' INTEGER, 'order' INTEGER);
+CREATE TABLE 'competition_rating_criteria' ('id' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, 'competition_group_id' INTEGER, 'name' TEXT, 'max_rating' INTEGER, 'weight' INTEGER, 'order' INTEGER);
 CREATE TABLE 'competition_ratings' ('adjucator_id' INTEGER NOT NULL, 'participant_id' INTEGER NOT NULL, 'competition_id' INTEGER NOT NULL, 'criterion_id' INTEGER NOT NULL, 'rating' INTEGER, PRIMARY KEY ('adjucator_id', 'competition_id', 'participant_id', 'criterion_id'));
 
 INSERT INTO 'competition_groups' ('id','name') VALUES ('1','Test-Reihe');

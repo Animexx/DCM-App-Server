@@ -479,6 +479,8 @@ return array(
                 'required' => true,
                 'filters' => array(),
                 'validators' => array(),
+                'allow_empty' => false,
+                'continue_if_empty' => false,
             ),
             1 => array(
                 'name' => 'name',
@@ -490,6 +492,8 @@ return array(
                     ),
                 ),
                 'validators' => array(),
+                'allow_empty' => false,
+                'continue_if_empty' => false,
             ),
             2 => array(
                 'name' => 'order',
@@ -501,9 +505,24 @@ return array(
                         'options' => array(),
                     ),
                 ),
+                'allow_empty' => false,
+                'continue_if_empty' => false,
             ),
             3 => array(
                 'name' => 'max_rating',
+                'required' => true,
+                'filters' => array(),
+                'validators' => array(
+                    0 => array(
+                        'name' => 'Zend\\I18n\\Validator\\Int',
+                        'options' => array(),
+                    ),
+                ),
+                'allow_empty' => false,
+                'continue_if_empty' => false,
+            ),
+            4 => array(
+                'name' => 'weight',
                 'required' => true,
                 'filters' => array(),
                 'validators' => array(

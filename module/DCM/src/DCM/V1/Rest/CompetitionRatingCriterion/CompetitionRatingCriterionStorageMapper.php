@@ -81,8 +81,8 @@ class CompetitionRatingCriterionStorageMapper
 	public function updateItem($item)
 	{
 		$stmt = $this->db->createStatement('UPDATE competition_rating_criteria SET name = ?, order = ?, max_rating = ?,
-			WHERE id = ?, competition_group_id = ?', new ParameterContainer(array(
-			$item->name, $item->order, $item->max_rating, $item->id, $item->competition_group_id
+			weight = ? WHERE id = ?, competition_group_id = ?', new ParameterContainer(array(
+			$item->name, $item->order, $item->max_rating, $item->weight, $item->id, $item->competition_group_id
 		)));
 		$stmt->execute();
 		return $this->getItem($item->competition_group_id, $item->id);
@@ -95,8 +95,8 @@ class CompetitionRatingCriterionStorageMapper
 	public function insertItem($item)
 	{
 		$stmt   = $this->db->createStatement('INSERT INTO competition_rating_criteria
-			(competition_group_id, name, order, max_rating) VALUES (?, ?, ?, ?)', new ParameterContainer(array(
-			$item->competition_group_id, $item->name, $item->order, $item->max_rating
+			(competition_group_id, name, order, max_rating, weight) VALUES (?, ?, ?, ?, ?)', new ParameterContainer(array(
+			$item->competition_group_id, $item->name, $item->order, $item->max_rating, $item->weight
 		)));
 		$result = $stmt->execute();
 
