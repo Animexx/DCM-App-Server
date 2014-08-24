@@ -49,12 +49,17 @@ class CompetitionRatingStorageMapper
 	/**
 	 * @param int $competition_id
 	 * @param int $participant_id
-	 * @param int $adjucator_id
+	 * @param int $adjucator_username
 	 * @throws \Exception
 	 * @return CompetitionRatingEntity
 	 */
-	public function getItem($competition_id, $participant_id, $adjucator_id)
+	public function getItem($competition_id, $participant_id, $adjucator_username)
 	{
+		$ret = $this->sqlSelect('SELECT * FROM users WHERE username = ?', array($adjucator_username));
+		var_dump($ret);
+		die();
+
+
 		$ret = $this->sqlSelect('SELECT * FROM competition_ratings WHERE competition_id = ? AND participant_id = ? AND adjucator_id = ?',
 			array($competition_id, $participant_id, $adjucator_id)
 		);

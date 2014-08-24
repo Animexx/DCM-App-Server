@@ -103,6 +103,7 @@ return array(
     'controllers' => array(
         'factories' => array(
             'DCM\\V1\\Rpc\\Import\\Controller' => 'DCM\\V1\\Rpc\\Import\\ImportControllerFactory',
+            'DCM\\V1\\Rpc\\Authenticate\\Controller' => 'DCM\\V1\\Rpc\\Authenticate\\AuthenticateControllerFactory',
         ),
     ),
     'router' => array(
@@ -171,6 +172,16 @@ return array(
                     ),
                 ),
             ),
+            'dcm.rpc.authenticate' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/me',
+                    'defaults' => array(
+                        'controller' => 'DCM\\V1\\Rpc\\Authenticate\\Controller',
+                        'action' => 'authenticate',
+                    ),
+                ),
+            ),
         ),
     ),
     'zf-versioning' => array(
@@ -182,6 +193,7 @@ return array(
             0 => 'dcm.rest.competition-rating-criterion',
             6 => 'dcm.rest.competition-rating',
             7 => 'dcm.rpc.import',
+            8 => 'dcm.rpc.authenticate',
         ),
     ),
     'zf-rpc' => array(
@@ -193,6 +205,13 @@ return array(
             ),
             'route_name' => 'dcm.rpc.import',
         ),
+        'DCM\\V1\\Rpc\\Authenticate\\Controller' => array(
+            'service_name' => 'Authenticate',
+            'http_methods' => array(
+                0 => 'GET',
+            ),
+            'route_name' => 'dcm.rpc.authenticate',
+        ),
     ),
     'zf-content-negotiation' => array(
         'controllers' => array(
@@ -203,6 +222,7 @@ return array(
             'DCM\\V1\\Rest\\CompetitionRatingCriterion\\Controller' => 'HalJson',
             'DCM\\V1\\Rest\\CompetitionRating\\Controller' => 'HalJson',
             'DCM\\V1\\Rpc\\Import\\Controller' => 'Json',
+            'DCM\\V1\\Rpc\\Authenticate\\Controller' => 'Json',
         ),
         'accept_whitelist' => array(
             'DCM\\V1\\Rest\\Competition\\Controller' => array(
@@ -240,6 +260,11 @@ return array(
                 1 => 'application/json',
                 2 => 'application/*+json',
             ),
+            'DCM\\V1\\Rpc\\Authenticate\\Controller' => array(
+                0 => 'application/vnd.dcm.v1+json',
+                1 => 'application/json',
+                2 => 'application/*+json',
+            ),
         ),
         'content_type_whitelist' => array(
             'DCM\\V1\\Rest\\Competition\\Controller' => array(
@@ -267,6 +292,10 @@ return array(
                 1 => 'application/json',
             ),
             'DCM\\V1\\Rpc\\Import\\Controller' => array(
+                0 => 'application/vnd.dcm.v1+json',
+                1 => 'application/json',
+            ),
+            'DCM\\V1\\Rpc\\Authenticate\\Controller' => array(
                 0 => 'application/vnd.dcm.v1+json',
                 1 => 'application/json',
             ),

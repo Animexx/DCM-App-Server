@@ -69,12 +69,14 @@ class CompetitionRatingResource extends AbstractResourceListener
     /**
      * Fetch a resource
      *
-     * @param  mixed $id
+     * @param  mixed $username
      * @return ApiProblem|mixed
      */
-    public function fetch($id)
+    public function fetch($username)
     {
-        return new ApiProblem(405, 'The GET method has not been defined for individual resources');
+		$competition_id = $this->getCurrentCompetitionId();
+		$participant_id = $this->getCurrentParticipantId();
+		return $this->storageMapper->getItem($competition_id, $participant_id, $username);
     }
 
     /**

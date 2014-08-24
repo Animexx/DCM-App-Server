@@ -64,9 +64,10 @@ class ImportController extends AbstractActionController
 		$this->db->query("DELETE FROM competition_participants")->execute();
 		foreach ($data["vorentscheide"] as $vorentscheid) {
 			foreach ($vorentscheid["teams"] as $team) {
+				$members = $team["members"];
 				$this->db->createStatement("INSERT INTO competition_participants (competition_id, user_id, name, data) VALUES
 					(?, ?, ?, ?)", new ParameterContainer(array(
-					$vorentscheid["ID"], $team["Userid 1"], $team["Name 1"] . " & " . $team["Name 2"], json_encode($team)
+					$vorentscheid["ID"], $members[0]["Userid"], $members[0]["Name"] . " & " . $members[1]["Name"], json_encode($team)
 				)))->execute();
 				$output["teams"][] = $team["ID"];
 			}
