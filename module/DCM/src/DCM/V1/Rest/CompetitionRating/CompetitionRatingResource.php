@@ -41,7 +41,12 @@ class CompetitionRatingResource extends AbstractResourceListener
      */
     public function create($data)
     {
-        return new ApiProblem(405, 'The POST method has not been defined');
+		/** TODO Sicherstellen, dass $id auch die ID des aktuellen Nutzers ist */
+		if (property_exists($data, "adjucator_id")) {
+			return $this->storageMapper->updateItem(CompetitionRatingEntity::fromArray($data));
+		} else {
+			return $this->storageMapper->insertItem(CompetitionRatingEntity::fromArray($data));
+		}
     }
 
     /**
@@ -52,6 +57,7 @@ class CompetitionRatingResource extends AbstractResourceListener
      */
     public function delete($id)
     {
+		/** TODO Sicherstellen, dass $id auch die ID des aktuellen Nutzers ist */
         return new ApiProblem(405, 'The DELETE method has not been defined for individual resources');
     }
 
@@ -63,20 +69,21 @@ class CompetitionRatingResource extends AbstractResourceListener
      */
     public function deleteList($data)
     {
+		/** TODO Sicherstellen, dass $id auch die ID des aktuellen Nutzers ist */
         return new ApiProblem(405, 'The DELETE method has not been defined for collections');
     }
 
     /**
      * Fetch a resource
      *
-     * @param  mixed $username
+     * @param  mixed $id
      * @return ApiProblem|mixed
      */
-    public function fetch($username)
+    public function fetch($id)
     {
 		$competition_id = $this->getCurrentCompetitionId();
 		$participant_id = $this->getCurrentParticipantId();
-		return $this->storageMapper->getItem($competition_id, $participant_id, $username);
+		return $this->storageMapper->getItem($competition_id, $participant_id, $id);
     }
 
     /**
@@ -103,6 +110,7 @@ class CompetitionRatingResource extends AbstractResourceListener
      */
     public function patch($id, $data)
     {
+		/** TODO Sicherstellen, dass $id auch die ID des aktuellen Nutzers ist */
         return new ApiProblem(405, 'The PATCH method has not been defined for individual resources');
     }
 
@@ -114,6 +122,7 @@ class CompetitionRatingResource extends AbstractResourceListener
      */
     public function replaceList($data)
     {
+		/** TODO Sicherstellen, dass $id auch die ID des aktuellen Nutzers ist */
         return new ApiProblem(405, 'The PUT method has not been defined for collections');
     }
 
@@ -126,6 +135,7 @@ class CompetitionRatingResource extends AbstractResourceListener
      */
     public function update($id, $data)
     {
+		/** TODO Sicherstellen, dass $id auch die ID des aktuellen Nutzers ist */
         return new ApiProblem(405, 'The PUT method has not been defined for individual resources');
     }
 }

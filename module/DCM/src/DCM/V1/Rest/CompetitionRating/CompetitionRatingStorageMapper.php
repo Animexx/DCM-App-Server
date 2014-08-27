@@ -49,27 +49,21 @@ class CompetitionRatingStorageMapper
 	/**
 	 * @param int $competition_id
 	 * @param int $participant_id
-	 * @param int $adjucator_username
+	 * @param int $adjucator_id
 	 * @throws \Exception
 	 * @return CompetitionRatingEntity
 	 */
-	public function getItem($competition_id, $participant_id, $adjucator_username)
+	public function getItem($competition_id, $participant_id, $adjucator_id)
 	{
-		$ret = $this->sqlSelect('SELECT * FROM users WHERE username = ?', array($adjucator_username));
-		var_dump($ret);
-		die();
-
-
 		$ret = $this->sqlSelect('SELECT * FROM competition_ratings WHERE competition_id = ? AND participant_id = ? AND adjucator_id = ?',
 			array($competition_id, $participant_id, $adjucator_id)
 		);
-		if (count($ret) == 0) throw new \Exception("Not found");
 		$ratings = array();
 		foreach ($ret as $r) $ratings[$r["criterion_id"]] = $r["rating"];
 		return CompetitionRatingEntity::fromDBArray(array(
-			"adjucator_id"   => $ret[0]["adjucator_id"],
-			"participant_id" => $ret[0]["participant_id"],
-			"competition_id" => $ret[0]["competition_id"],
+			"adjucator_id"   => $adjucator_id,
+			"participant_id" => $participant_id,
+			"competition_id" => $competition_id,
 			"ratings"        => $ratings,
 		));
 	}
@@ -116,21 +110,23 @@ class CompetitionRatingStorageMapper
 	}
 
 	/**
-	 * @param CompetitionParticipantEntity $item
-	 * @return CompetitionParticipantEntity
+	 * @param CompetitionRatingEntity $item
+	 * @return CompetitionRatingEntity
 	 */
 	public function updateItem($item)
 	{
+		/*
 		$stmt = $this->db->createStatement('UPDATE competition_participants SET name = ?, data = ? WHERE competition_id = ? AND user_id = ?',
 			new ParameterContainer(array($item->name, $item->data, $item->competition_id, $item->user_id
 			)));
 		$stmt->execute();
-		return $this->getItem($item->competition_id, $item->user_id);
+		*/
+		return $this->getItem($item->competition_id, $item->participant_id, $item->adjucator_id);
 	}
 
 	/**
-	 * @param CompetitionParticipantEntity $item
-	 * @return CompetitionParticipantEntity
+	 * @param CompetitionRatingEntity $item
+	 * @return CompetitionRatingEntity
 	 */
 	public function insertItem($item)
 	{
