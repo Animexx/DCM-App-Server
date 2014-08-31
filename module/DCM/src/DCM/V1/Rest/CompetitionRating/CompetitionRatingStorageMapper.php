@@ -55,7 +55,7 @@ class CompetitionRatingStorageMapper
 	 */
 	public function getItem($competition_id, $participant_id, $adjucator_id)
 	{
-		$ret = $this->sqlSelect('SELECT * FROM competition_ratings WHERE competition_id = ? AND participant_id = ? AND adjucator_id = ?',
+		$ret     = $this->sqlSelect('SELECT * FROM competition_ratings WHERE competition_id = ? AND participant_id = ? AND adjucator_id = ?',
 			array($competition_id, $participant_id, $adjucator_id)
 		);
 		$ratings = array();
@@ -84,7 +84,7 @@ class CompetitionRatingStorageMapper
 		foreach ($ret as $r) {
 			if (!isset($ratings[$r["adjucator_id"]])) {
 				$ratings[$r["adjucator_id"]] = array();
-				$adjucators[] = $r;
+				$adjucators[]                = $r;
 			}
 			$ratings[$r["adjucator_id"]][$r["criterion_id"]] = $r["rating"];
 		}
@@ -115,12 +115,20 @@ class CompetitionRatingStorageMapper
 	 */
 	public function updateItem($item)
 	{
-		/*
-		$stmt = $this->db->createStatement('UPDATE competition_participants SET name = ?, data = ? WHERE competition_id = ? AND user_id = ?',
-			new ParameterContainer(array($item->name, $item->data, $item->competition_id, $item->user_id
+		$stmt = $this->db->createStatement('DELETE FROM competition_ratings WHERE adjucator_id = ? AND participant_id = ? ' .
+			' AND competition_id = ?', new ParameterContainer(array(
+				$item->adjucator_id, $item->participant_id, $item->competition_id
 			)));
 		$stmt->execute();
-		*/
+
+		foreach ($item->ratings as $criterion_id => $rating) {
+			$stmt = $this->db->createStatement('INSERT INTO competition_ratings (adjucator_id, participant_id, competition_id, ' .
+				'criterion_id, rating) VALUES (?, ?, ?, ?, ?)', new ParameterContainer(array(
+					$item->adjucator_id, $item->participant_id, $item->competition_id, $criterion_id, $rating
+				)));
+			$stmt->execute();
+		}
+
 		return $this->getItem($item->competition_id, $item->participant_id, $item->adjucator_id);
 	}
 

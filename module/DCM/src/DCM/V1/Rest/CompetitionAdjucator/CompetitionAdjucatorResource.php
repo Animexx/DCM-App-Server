@@ -1,17 +1,17 @@
 <?php
-namespace DCM\V1\Rest\CompetitionRating;
+namespace DCM\V1\Rest\CompetitionAdjucator;
 
 use ZF\ApiProblem\ApiProblem;
 use ZF\Rest\AbstractResourceListener;
 
-class CompetitionRatingResource extends AbstractResourceListener
+class CompetitionAdjucatorResource extends AbstractResourceListener
 {
 
-	/** @var CompetitionRatingStorageMapper $storageMapper */
+	/** @var CompetitionAdjucatorStorageMapper $storageMapper */
 	protected $storageMapper;
 
 	/**
-	 * @param CompetitionRatingStorageMapper $storageMapper
+	 * @param CompetitionAdjucatorStorageMapper $storageMapper
 	 */
 	public function __construct($storageMapper)
 	{
@@ -24,16 +24,8 @@ class CompetitionRatingResource extends AbstractResourceListener
 	protected function getCurrentCompetitionId() {
 		return $this->getEvent()->getRouteMatch()->getParam("competition_id");
 	}
-	/**
-	 * @return int
-	 */
-	protected function getCurrentParticipantId() {
-		return $this->getEvent()->getRouteMatch()->getParam("participant_id");
-	}
 
-
-
-	/**
+    /**
      * Create a resource
      *
      * @param  mixed $data
@@ -41,14 +33,7 @@ class CompetitionRatingResource extends AbstractResourceListener
      */
     public function create($data)
     {
-		/** TODO Sicherstellen, dass $id auch die ID des aktuellen Nutzers ist */
-		$item = CompetitionRatingEntity::fromArray($data);
-		if (property_exists($data, "adjucator_id")) {
-			return $this->storageMapper->updateItem($item);
-		} else {
-			/** TODO Passiert das überhaupt? */
-			return $this->storageMapper->insertItem($item);
-		}
+        return new ApiProblem(405, 'The POST method has not been defined');
     }
 
     /**
@@ -59,7 +44,6 @@ class CompetitionRatingResource extends AbstractResourceListener
      */
     public function delete($id)
     {
-		/** TODO Sicherstellen, dass $id auch die ID des aktuellen Nutzers ist */
         return new ApiProblem(405, 'The DELETE method has not been defined for individual resources');
     }
 
@@ -71,7 +55,6 @@ class CompetitionRatingResource extends AbstractResourceListener
      */
     public function deleteList($data)
     {
-		/** TODO Sicherstellen, dass $id auch die ID des aktuellen Nutzers ist */
         return new ApiProblem(405, 'The DELETE method has not been defined for collections');
     }
 
@@ -83,9 +66,7 @@ class CompetitionRatingResource extends AbstractResourceListener
      */
     public function fetch($id)
     {
-		$competition_id = $this->getCurrentCompetitionId();
-		$participant_id = $this->getCurrentParticipantId();
-		return $this->storageMapper->getItem($competition_id, $participant_id, $id);
+        return new ApiProblem(405, 'The GET method has not been defined for individual resources');
     }
 
     /**
@@ -97,9 +78,8 @@ class CompetitionRatingResource extends AbstractResourceListener
     public function fetchAll($params = array())
     {
 		$competition_id = $this->getCurrentCompetitionId();
-		$participant_id = $this->getCurrentParticipantId();
-		$adapter = new CompetitionRatingPaginatorAdapter($this->storageMapper, $competition_id, $participant_id);
-		$collection = new CompetitionRatingCollection($adapter);
+		$adapter = new CompetitionAdjucatorPaginationAdapter($this->storageMapper, $competition_id);
+		$collection = new CompetitionAdjucatorCollection($adapter);
 		return $collection;
     }
 
@@ -112,7 +92,6 @@ class CompetitionRatingResource extends AbstractResourceListener
      */
     public function patch($id, $data)
     {
-		/** TODO Sicherstellen, dass $id auch die ID des aktuellen Nutzers ist */
         return new ApiProblem(405, 'The PATCH method has not been defined for individual resources');
     }
 
@@ -124,7 +103,6 @@ class CompetitionRatingResource extends AbstractResourceListener
      */
     public function replaceList($data)
     {
-		/** TODO Sicherstellen, dass $id auch die ID des aktuellen Nutzers ist */
         return new ApiProblem(405, 'The PUT method has not been defined for collections');
     }
 
@@ -137,7 +115,6 @@ class CompetitionRatingResource extends AbstractResourceListener
      */
     public function update($id, $data)
     {
-		/** TODO Sicherstellen, dass $id auch die ID des aktuellen Nutzers ist */
         return new ApiProblem(405, 'The PUT method has not been defined for individual resources');
     }
 }

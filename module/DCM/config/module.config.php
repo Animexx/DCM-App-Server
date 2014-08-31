@@ -182,6 +182,15 @@ return array(
                     ),
                 ),
             ),
+            'dcm.rest.competition-adjucator' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/group/:group_id/competition/:competition_id/adjucator[/:adjucator_id]',
+                    'defaults' => array(
+                        'controller' => 'DCM\\V1\\Rest\\CompetitionAdjucator\\Controller',
+                    ),
+                ),
+            ),
         ),
     ),
     'zf-versioning' => array(
@@ -194,6 +203,7 @@ return array(
             6 => 'dcm.rest.competition-rating',
             7 => 'dcm.rpc.import',
             8 => 'dcm.rpc.authenticate',
+            9 => 'dcm.rest.competition-adjucator',
         ),
     ),
     'zf-rpc' => array(
@@ -223,6 +233,7 @@ return array(
             'DCM\\V1\\Rest\\CompetitionRating\\Controller' => 'HalJson',
             'DCM\\V1\\Rpc\\Import\\Controller' => 'Json',
             'DCM\\V1\\Rpc\\Authenticate\\Controller' => 'Json',
+            'DCM\\V1\\Rest\\CompetitionAdjucator\\Controller' => 'HalJson',
         ),
         'accept_whitelist' => array(
             'DCM\\V1\\Rest\\Competition\\Controller' => array(
@@ -265,6 +276,11 @@ return array(
                 1 => 'application/json',
                 2 => 'application/*+json',
             ),
+            'DCM\\V1\\Rest\\CompetitionAdjucator\\Controller' => array(
+                0 => 'application/vnd.dcm.v1+json',
+                1 => 'application/hal+json',
+                2 => 'application/json',
+            ),
         ),
         'content_type_whitelist' => array(
             'DCM\\V1\\Rest\\Competition\\Controller' => array(
@@ -299,6 +315,10 @@ return array(
                 0 => 'application/vnd.dcm.v1+json',
                 1 => 'application/json',
             ),
+            'DCM\\V1\\Rest\\CompetitionAdjucator\\Controller' => array(
+                0 => 'application/vnd.dcm.v1+json',
+                1 => 'application/json',
+            ),
         ),
     ),
     'zf-content-validation' => array(
@@ -322,6 +342,9 @@ return array(
         ),
         'DCM\\V1\\Rpc\\Import\\Controller' => array(
             'input_filter' => 'DCM\\V1\\Rpc\\Import\\Validator',
+        ),
+        'DCM\\V1\\Rest\\CompetitionAdjucator\\Controller' => array(
+            'input_filter' => 'DCM\\V1\\Rest\\CompetitionAdjucator\\Validator',
         ),
     ),
     'input_filter_specs' => array(
@@ -622,6 +645,36 @@ return array(
                 'continue_if_empty' => false,
             ),
         ),
+        'DCM\\V1\\Rest\\CompetitionAdjucator\\Validator' => array(
+            0 => array(
+                'name' => 'competition_id',
+                'required' => true,
+                'filters' => array(),
+                'validators' => array(
+                    0 => array(
+                        'name' => 'Zend\\I18n\\Validator\\Int',
+                        'options' => array(),
+                    ),
+                ),
+            ),
+            1 => array(
+                'name' => 'adjucator_id',
+                'required' => true,
+                'filters' => array(),
+                'validators' => array(
+                    0 => array(
+                        'name' => 'Zend\\I18n\\Validator\\Int',
+                        'options' => array(),
+                    ),
+                ),
+            ),
+            2 => array(
+                'name' => 'username',
+                'required' => true,
+                'filters' => array(),
+                'validators' => array(),
+            ),
+        ),
     ),
     'service_manager' => array(
         'factories' => array(
@@ -631,6 +684,7 @@ return array(
             'DCM\\V1\\Rest\\CompetitionParticipant\\CompetitionParticipantResource' => 'DCM\\V1\\Rest\\CompetitionParticipant\\CompetitionParticipantResourceFactory',
             'DCM\\V1\\Rest\\CompetitionRatingCriterion\\CompetitionRatingCriterionResource' => 'DCM\\V1\\Rest\\CompetitionRatingCriterion\\CompetitionRatingCriterionResourceFactory',
             'DCM\\V1\\Rest\\CompetitionRating\\CompetitionRatingResource' => 'DCM\\V1\\Rest\\CompetitionRating\\CompetitionRatingResourceFactory',
+            'DCM\\V1\\Rest\\CompetitionAdjucator\\CompetitionAdjucatorResource' => 'DCM\\V1\\Rest\\CompetitionAdjucator\\CompetitionAdjucatorResourceFactory',
         ),
     ),
     'zf-rest' => array(
@@ -771,6 +825,24 @@ return array(
             'collection_class' => 'DCM\\V1\\Rest\\CompetitionRating\\CompetitionRatingCollection',
             'service_name' => 'CompetitionRating',
         ),
+        'DCM\\V1\\Rest\\CompetitionAdjucator\\Controller' => array(
+            'listener' => 'DCM\\V1\\Rest\\CompetitionAdjucator\\CompetitionAdjucatorResource',
+            'route_name' => 'dcm.rest.competition-adjucator',
+            'route_identifier_name' => 'adjucator_id',
+            'collection_name' => 'competition_adjucator',
+            'entity_http_methods' => array(
+                0 => 'GET',
+            ),
+            'collection_http_methods' => array(
+                0 => 'GET',
+            ),
+            'collection_query_whitelist' => array(),
+            'page_size' => 25,
+            'page_size_param' => null,
+            'entity_class' => 'DCM\\V1\\Rest\\CompetitionAdjucator\\CompetitionAdjucatorEntity',
+            'collection_class' => 'DCM\\V1\\Rest\\CompetitionAdjucator\\CompetitionAdjucatorCollection',
+            'service_name' => 'CompetitionAdjucator',
+        ),
     ),
     'zf-hal' => array(
         'metadata_map' => array(
@@ -843,6 +915,18 @@ return array(
             'DCM\\V1\\Rest\\CompetitionRating\\CompetitionRatingCollection' => array(
                 'entity_identifier_name' => 'adjucator_id',
                 'route_name' => 'dcm.rest.competition-rating',
+                'route_identifier_name' => 'adjucator_id',
+                'is_collection' => true,
+            ),
+            'DCM\\V1\\Rest\\CompetitionAdjucator\\CompetitionAdjucatorEntity' => array(
+                'entity_identifier_name' => 'adjucator_id',
+                'route_name' => 'dcm.rest.competition-adjucator',
+                'route_identifier_name' => 'adjucator_id',
+                'hydrator' => 'Zend\\Stdlib\\Hydrator\\ObjectProperty',
+            ),
+            'DCM\\V1\\Rest\\CompetitionAdjucator\\CompetitionAdjucatorCollection' => array(
+                'entity_identifier_name' => 'adjucator_id',
+                'route_name' => 'dcm.rest.competition-adjucator',
                 'route_identifier_name' => 'adjucator_id',
                 'is_collection' => true,
             ),
