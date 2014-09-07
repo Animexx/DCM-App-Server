@@ -95,8 +95,8 @@ class CompetitionRatingCriterionStorageMapper
 	public function insertItem($item)
 	{
 		$stmt   = $this->db->createStatement('INSERT INTO competition_rating_criteria
-			(competition_group_id, name, order, max_rating, weight) VALUES (?, ?, ?, ?, ?)', new ParameterContainer(array(
-			$item->competition_group_id, $item->name, $item->order, $item->max_rating, $item->weight
+			(competition_group_id, name, order, max_rating, weight, group_id) VALUES (?, ?, ?, ?, ?, ?)', new ParameterContainer(array(
+			$item->competition_group_id, $item->name, $item->order, $item->max_rating, $item->weight, $item->group_id
 		)));
 		$result = $stmt->execute();
 
