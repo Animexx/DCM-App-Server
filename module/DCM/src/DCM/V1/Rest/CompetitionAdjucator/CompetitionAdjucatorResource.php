@@ -33,7 +33,10 @@ class CompetitionAdjucatorResource extends AbstractResourceListener
      */
     public function create($data)
     {
-        return new ApiProblem(405, 'The POST method has not been defined');
+		/** TODO Sicherstellen, dass $id auch die ID des aktuellen Nutzers ist */
+		$item = CompetitionAdjucatorEntity::fromArray($data);
+		$ret = $this->storageMapper->insertItem($item);
+		return $ret;
     }
 
     /**
@@ -66,7 +69,9 @@ class CompetitionAdjucatorResource extends AbstractResourceListener
      */
     public function fetch($id)
     {
-        return new ApiProblem(405, 'The GET method has not been defined for individual resources');
+		$competition_id = $this->getCurrentCompetitionId();
+		$adapter = new CompetitionAdjucatorPaginationAdapter($this->storageMapper, $competition_id);
+		return $adapter->getItem($id);
     }
 
     /**

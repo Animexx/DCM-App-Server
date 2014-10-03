@@ -12,12 +12,17 @@ class UserStorageMapper
 	/** @var Adapter $db */
 	protected $db;
 
+	/** @var string */
+	protected $htpasswd_file;
+
 	/**
 	 * @param Adapter $db
+	 * @param string $htpasswd_file
 	 */
-	public function __construct($db)
+	public function __construct($db, $htpasswd_file)
 	{
-		$this->db = $db;
+		$this->db            = $db;
+		$this->htpasswd_file = $htpasswd_file;
 	}
 
 	/**
@@ -61,11 +66,33 @@ class UserStorageMapper
 	 * @param int $limit
 	 * @return UserEntity[]
 	 */
-	public function getItems($offset, $limit) {
-		$ret = $this->sqlSelect('SELECT * FROM users ORDER BY `order` LIMIT ?, ?', array($offset, $limit) );
+	public function getItems($offset, $limit)
+	{
+		$ret   = $this->sqlSelect('SELECT * FROM users ORDER BY username LIMIT ?, ?', array($offset, $limit));
 		$parts = array();
 		foreach ($ret as $part) $parts[] = UserEntity::fromDBArray($part);
 		return $parts;
+	}
+
+	/**
+	 * @param string $username
+	 * @param string $pwd
+	 */
+	private function savePassword($username, $pwd)
+	{
+		$file = file_get_contents($this->htpasswd_file);
+		$enc_passwd = crypt($pwd, base64_encode($pwd));
+		$lines = explode("\n", $file);
+		$found = false;
+		foreach ($lines as $line_nr => $line) {
+			$x = explode(":", $line);
+			if (count($x) == 2 && $x[0] == $username) {
+				$found = true;
+				$lines[$line_nr] = $x[0] . ":" . $enc_passwd;
+			}
+		}
+		if (!$found) $lines[] = $username . ":" . $enc_passwd;
+		file_put_contents($this->htpasswd_file, implode("\n", $lines));
 	}
 
 	/**
@@ -74,10 +101,19 @@ class UserStorageMapper
 	 */
 	public function updateItem($item)
 	{
-		$stmt = $this->db->createStatement('UPDATE users SET animexx_id = ?, username = ? WHERE id = ?', new ParameterContainer(array(
-			$item->animexx_id, $item->username, $item->id
-		)));
-		$stmt->execute();
+		if (strlen($item->password) == 40) {
+			$stmt = $this->db->createStatement('UPDATE users SET animexx_id = ?, username = ? WHERE id = ?', new ParameterContainer(array(
+				$item->animexx_id, $item->username, $item->id
+			)));
+			$stmt->execute();
+		} else {
+			$pwd_enc = sha1($item->password);
+			$stmt    = $this->db->createStatement('UPDATE users SET animexx_id = ?, username = ?, password = ? WHERE id = ?', new ParameterContainer(array(
+				$item->animexx_id, $item->username, $item->id, $pwd_enc
+			)));
+			$stmt->execute();
+			$this->savePassword($item->username, $item->password);
+		}
 		return $this->getItem($item->id);
 	}
 
@@ -87,11 +123,13 @@ class UserStorageMapper
 	 */
 	public function insertItem($item)
 	{
+		$pwd_enc = sha1($item->password);
 		$stmt   = $this->db->createStatement('INSERT INTO users
-			(id, animexx_id, username, password) VALUES (?, ?, ?, ?)', new ParameterContainer(array(
-			$item->id, $item->animexx_id, $item->username, $item->password
+			(animexx_id, username, password) VALUES (?, ?, ?)', new ParameterContainer(array(
+			$item->animexx_id, $item->username, $pwd_enc
 		)));
 		$result = $stmt->execute();
+		$this->savePassword($item->username, $item->password);
 
 		$new_id = $result->getGeneratedValue();
 

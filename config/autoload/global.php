@@ -4,6 +4,9 @@ return array(
 		'password' => '',
 		'url' => '',
 	),
+	'dcm-users' => array(
+		'htpasswd' => __DIR__ . "/../../data/htpasswd",
+	),
     'zf-mvc-auth' => array(
         'authentication' => array(
             'http' => array(

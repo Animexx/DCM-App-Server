@@ -51,10 +51,17 @@ class Module implements ApigilityProviderInterface
 						return new \DCM\V1\Rest\CompetitionRating\CompetitionRatingStorageMapper($db);
 					},
 				'DCM\V1\Rest\CompetitionAdjucator\CompetitionAdjucatorStorageMapper' =>  function ($sm) {
-						/** @var \Zend\ServiceManager\ServiceManager $sm */
-						$db = $sm->get('Zend\Db\Adapter\Adapter');
-						return new \DCM\V1\Rest\CompetitionAdjucator\CompetitionAdjucatorStorageMapper($db);
-					},
+					/** @var \Zend\ServiceManager\ServiceManager $sm */
+					$db = $sm->get('Zend\Db\Adapter\Adapter');
+					return new \DCM\V1\Rest\CompetitionAdjucator\CompetitionAdjucatorStorageMapper($db);
+				},
+				'DCM\V1\Rest\User\UserStorageMapper' =>  function ($sm) {
+					/** @var \Zend\ServiceManager\ServiceManager $sm */
+					$db = $sm->get('Zend\Db\Adapter\Adapter');
+					$config = $sm->get("Config");
+					$htpasswd = $config["dcm-users"]["htpasswd"];
+					return new \DCM\V1\Rest\User\UserStorageMapper($db, $htpasswd);
+				},
 			),
 		);
 	}

@@ -54,11 +54,11 @@ class CompetitionAdjucatorStorageMapper
 	 */
 	public function getItem($competition_id, $adjucator_id)
 	{
-		$ret     = $this->sqlSelect('SELECT a.competition_id, a.user_id adjucator_id, b.username FROM ' .
-			'competition_adjucators a JOIN users b ON a.user_id = b.id WHERE competition_id = ? AND adjucator_id = ?',
+		$ret     = $this->sqlSelect('SELECT a.competition_id, a.adjucator_id adjucator_id, b.username FROM competition_adjucators a JOIN users b ON a.adjucator_id = b.id WHERE a.competition_id = ? AND a.adjucator_id = ?',
 			array($competition_id, $adjucator_id)
 		);
-		return CompetitionAdjucatorEntity::fromDBArray($ret);
+		if (count($ret) == 0) return null;
+		return CompetitionAdjucatorEntity::fromDBArray($ret[0]);
 	}
 
 	/**
@@ -69,8 +69,8 @@ class CompetitionAdjucatorStorageMapper
 	 */
 	public function getItems($competition_id, $offset, $limit)
 	{
-		$ret     = $this->sqlSelect('SELECT a.competition_id, a.user_id adjucator_id, b.username FROM ' .
-			'competition_adjucators a JOIN users b ON a.user_id = b.id WHERE competition_id = ? ORDER BY b.username LIMIT ?, ?',
+		$ret     = $this->sqlSelect('SELECT a.competition_id, a.adjucator_id adjucator_id, b.username FROM ' .
+			'competition_adjucators a JOIN users b ON a.adjucator_id = b.id WHERE competition_id = ? ORDER BY b.username LIMIT ?, ?',
 			array($competition_id, $offset, $limit)
 		);
 		$parts = array();
@@ -83,10 +83,25 @@ class CompetitionAdjucatorStorageMapper
 	 */
 	public function getCount($competition_id)
 	{
-		$ret     = $this->sqlSelect('SELECT COUNT(*) num FROM competition_adjucators a JOIN users b ON a.user_id = b.id WHERE competition_id = ?',
+		$ret     = $this->sqlSelect('SELECT COUNT(*) num FROM competition_adjucators a JOIN users b ON a.adjucator_id = b.id WHERE competition_id = ?',
 			array($competition_id)
 		);
 		return $ret[0]["num"];
+	}
+
+	/**
+	 * @param CompetitionAdjucatorEntity $item
+	 * @return CompetitionAdjucatorEntity
+	 */
+	public function insertItem($item)
+	{
+		$stmt   = $this->db->createStatement('REPLACE INTO competition_adjucators
+			(competition_id, adjucator_id) VALUES (?, ?)', new ParameterContainer(array(
+			$item->competition_id, $item->adjucator_id
+		)));
+		$stmt->execute();
+
+		return $this->getItem($item->competition_id, $item->adjucator_id);
 	}
 
 }

@@ -13,6 +13,8 @@ class UserEntity
 	public $password;
 	/** @var int $sysadmin */
 	public $sysadmin;
+	/** @var int[] $adjucator_for */
+	public $adjucator_for;
 
 	/**
 	 * @param array $data

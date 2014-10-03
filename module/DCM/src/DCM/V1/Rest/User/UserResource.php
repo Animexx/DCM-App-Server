@@ -25,7 +25,14 @@ class UserResource extends AbstractResourceListener
 	 */
 	public function create($data)
 	{
-		return new ApiProblem(405, 'The POST method has not been defined');
+		/** TODO Sicherstellen, dass $id auch die ID des aktuellen Nutzers ist */
+		$item = UserEntity::fromArray($data);
+		if (property_exists($data, "id")) {
+			return $this->storageMapper->updateItem($item);
+		} else {
+			/** TODO Passiert das überhaupt? */
+			return $this->storageMapper->insertItem($item);
+		}
 	}
 
 	/**
@@ -58,7 +65,7 @@ class UserResource extends AbstractResourceListener
 	 */
 	public function fetch($id)
 	{
-		return new ApiProblem(405, 'The GET method has not been defined for individual resources');
+		return $this->storageMapper->getItem($id);
 	}
 
 	/**
@@ -69,7 +76,9 @@ class UserResource extends AbstractResourceListener
 	 */
 	public function fetchAll($params = array())
 	{
-		return new ApiProblem(405, 'The GET method has not been defined for collections4');
+		$adapter = new UserPaginatorAdapter($this->storageMapper);
+		$collection = new UserCollection($adapter);
+		return $collection;
 	}
 
 	/**
