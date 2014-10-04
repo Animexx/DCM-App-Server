@@ -47,8 +47,10 @@ class CompetitionAdjucatorResource extends AbstractResourceListener
      */
     public function delete($id)
     {
-        return new ApiProblem(405, 'The DELETE method has not been defined for individual resources');
-    }
+		$competition_id = $this->getCurrentCompetitionId();
+		$this->storageMapper->deleteItem($competition_id, $id);
+		return true;
+	}
 
     /**
      * Delete a collection, or members of a collection

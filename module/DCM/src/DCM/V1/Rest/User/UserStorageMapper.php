@@ -109,7 +109,7 @@ class UserStorageMapper
 		} else {
 			$pwd_enc = sha1($item->password);
 			$stmt    = $this->db->createStatement('UPDATE users SET animexx_id = ?, username = ?, password = ? WHERE id = ?', new ParameterContainer(array(
-				$item->animexx_id, $item->username, $item->id, $pwd_enc
+				$item->animexx_id, $item->username, $pwd_enc, $item->id
 			)));
 			$stmt->execute();
 			$this->savePassword($item->username, $item->password);

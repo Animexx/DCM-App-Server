@@ -104,4 +104,15 @@ class CompetitionAdjucatorStorageMapper
 		return $this->getItem($item->competition_id, $item->adjucator_id);
 	}
 
+	/**
+	 * @param int $competition_id
+	 * @param int $user_id
+	 */
+	public function deleteItem($competition_id, $user_id) {
+		$stmt   = $this->db->createStatement('DELETE FROM competition_adjucators
+			WHERE competition_id = ? AND adjucator_id = ?', new ParameterContainer(array(
+			$competition_id, $user_id
+		)));
+		$stmt->execute();
+	}
 }

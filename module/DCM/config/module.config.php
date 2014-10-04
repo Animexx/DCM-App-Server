@@ -449,7 +449,7 @@ return array(
             ),
             2 => array(
                 'name' => 'password',
-                'required' => true,
+                'required' => false,
                 'filters' => array(),
                 'validators' => array(),
                 'allow_empty' => false,
